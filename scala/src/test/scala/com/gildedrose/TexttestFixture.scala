@@ -2,6 +2,7 @@ package com.gildedrose
 
 object TexttestFixture {
   def main(args: Array[String]): Unit = {
+    println("OMGHAI!")
     val items = Array[Item](
       new Item("+5 Dexterity Vest", 10, 20),
       new Item("Aged Brie", 2, 0),
@@ -14,7 +15,7 @@ object TexttestFixture {
       // this conjured item does not work properly yet
       new Item("Conjured Mana Cake", 3, 6)
     )
-    val app = new GildedRose(items)
+    val app = new GildedRose(items : _*)
     val days = if (args.length > 0) args(0).toInt + 1 else 2
     for (i <- 0 until days) {
       System.out.println("-------- day " + i + " --------")
