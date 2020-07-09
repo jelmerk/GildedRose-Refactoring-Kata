@@ -18,7 +18,7 @@ class GildedRose {
     private static final List<QualityChangeStrategy> STRATEGIES = Arrays.asList(
         new AgedBrieStrategy(),
         new BackstagePassesStrategy(),
-        new ConjuredManaCakeStrategy(),
+        new ConjuredItemStrategy(),
         new NormalItemStrategy() // must be in last position
     );
 
@@ -54,7 +54,7 @@ class GildedRose {
     }
 
     /**
-     * Implementations of this interface encapsulate the logic for updating the quality and sellIn of items.
+     * Implementations of this interface encapsulate the logic for updating the quality of items.
      */
     interface QualityChangeStrategy {
 
@@ -116,9 +116,9 @@ class GildedRose {
 
             if (item.sellIn <= 0) {
                 change = -item.quality;
-            } else if (item.sellIn < 6) {
+            } else if (item.sellIn <= 5) {
                 change = 3;
-            } else if (item.sellIn < 11) {
+            } else if (item.sellIn <= 10) {
                 change = 2;
             } else {
                 change = 1;
@@ -130,17 +130,17 @@ class GildedRose {
     }
 
     /**
-     * Implementation of {@link QualityChangeStrategy} for conjured mana cakes.
+     * Implementation of {@link QualityChangeStrategy} for conjured items.
      *
      * "Conjured" items degrade in Quality twice as fast as normal items
      */
-    static class ConjuredManaCakeStrategy implements QualityChangeStrategy {
+    static class ConjuredItemStrategy implements QualityChangeStrategy {
 
         private final NormalItemStrategy normalItemStrategy = new NormalItemStrategy();
 
         @Override
         public boolean supports(String name) {
-            return CONJURED_MANA_CAKE.equals(name);
+            return name != null && name.startsWith("Conjured");
         }
 
         @Override
@@ -153,7 +153,7 @@ class GildedRose {
     /**
      * Implementation of {@link QualityChangeStrategy} for normal items.
      *
-     * Lowers the quality and sellIn by one one each day.
+     * Lowers the quality by one one each day.
      * Decreases quality by 2 after day has passed
      */
     static class NormalItemStrategy implements QualityChangeStrategy {
